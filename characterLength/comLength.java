@@ -24,9 +24,6 @@ public class comLength {
 			System.out.println(str+"            "+wzLength.num(str));
 		}
 		
-//		zifu test=new zifu();
-//		String hi="62ÓªÏú6.2ÕÛ50Ôª·â¶¥";
-//		System.out.println(test.num(hi));
 	}
 
 }
