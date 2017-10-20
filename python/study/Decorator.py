@@ -48,6 +48,20 @@ def log_call(arg):
 
         return decorator
 
+#默认值形式
+def log_2(text=''):
+    def decorator(func):
+        print("格外信息：%s" % text)
+        @functools.wraps(func)
+        def wrapper(*args, **kw):
+            print("begin call")
+            func(*args, **kw)
+            print("end call")
+        return wrapper
+    return decorator
+@log()
+def now():
+    print('2017-10-20')
 
 @log_call
 def now():
