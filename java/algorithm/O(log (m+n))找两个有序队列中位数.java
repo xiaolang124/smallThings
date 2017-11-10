@@ -1,3 +1,6 @@
+There are two sorted arrays A and B of size m and n respectively. Find the median of the two sorted arrays. The overall run time complexity should be O(log (m+n)).
+
+
     /*如果我们可以在两个数列中求出第K小的元素，便可以解决该问题
 	    不妨设数列A元素个数为n，数列B元素个数为m，各自升序排序，求第k小元素
 	    取A[k / 2] B[k / 2] 比较，
