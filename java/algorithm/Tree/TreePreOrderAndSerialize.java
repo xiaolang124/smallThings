@@ -1,3 +1,5 @@
+import java.util.Stack;
+
 public class TreePreOrderAndSerialize {
 
     public static void preOrder(Node root){
@@ -7,6 +9,26 @@ public class TreePreOrderAndSerialize {
             preOrder(root.getRight());
         }else {
             return;
+        }
+    }
+
+    public static void preOrderNoRecursive(Node root){
+        Stack<Node> stack = new Stack<Node>();
+        if(root==null){
+            return;
+        }
+        Node tempNode = root;
+        while(!stack.isEmpty() ||
+                tempNode!=null){
+            if(tempNode!=null){
+                System.out.println(tempNode.getData());
+                stack.push(tempNode);
+                tempNode = tempNode.getLeft();
+            }else {
+                tempNode = stack.peek();
+                stack.pop();
+                tempNode = tempNode.getRight();
+            }
         }
     }
 
