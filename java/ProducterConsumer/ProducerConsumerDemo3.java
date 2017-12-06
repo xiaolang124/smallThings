@@ -9,23 +9,14 @@
 升级版：
 使用Lock来替换synchronized，wait,notify,nonifyAll语法和语句的使用
 不需要同步，不需要notify
-------------
-加强升级版：
-此版本为最终版，主要在使用锁lock的基础上，加上唤醒对方（不包括己方)进程的优化
-通过一个锁建立多个condition对象来解决
-
-流程：
-生产者拿到锁，执行，判断没有真，继续执行，生产完毕后唤醒消费者来消费    生产者唤醒消费者
-消费者拿到锁，执行，判断没有假，继续执行，消费完毕后唤醒生产者继续生产   消费者唤醒生产者
-
 */
 import java.util.concurrent.locks.*;
-class  ProducterConsumerDemo4
+class  ProducerConsumerDemo3
 {
     public static void main(String[] args) 
     {
         Resources  r =new Resources();
-        Productor  pro =new Productor(r);
+        Producer  pro =new Producer(r);
         Consumer   con = new Consumer(r);
         
         Thread t1 =new Thread(pro);
@@ -43,12 +34,11 @@ class  ProducterConsumerDemo4
 class Resources
 {
     private String name;
-    private int count = 1;
+    private int count =1;
     private boolean flag =false;
     private Lock lock = new ReentrantLock();
 
-    private Condition condition_pro = lock.newCondition(); //使用lock建立生产者的condition对象
-    private Condition condition_con = lock.newCondition(); //使用lock建立消费者的condition对象
+    private Condition condition = lock.newCondition();
 
     public  void set(String name) throws InterruptedException
     {  
@@ -57,14 +47,14 @@ class Resources
         {
             //1)循环判断
            while(flag)
-               //如果为真，放弃生产者的资格
-               condition_pro.await(); //会抛出异常
+               //如果为真，放弃资格
+               condition.await(); //会抛出异常
            this.name = name+"--"+count++;
 
            System.out.println(Thread.currentThread().getName()+"生产者"+this.name);
            flag =true;
-           //2)使用消费condition唤醒进程
-           condition_con.signal(); //生产者生产完毕后，唤醒消费者的进程（不再是signalAll)
+           //2)使用condition唤醒所有进程
+           condition.signalAll(); //如果使用condition.signal()会出现相互等待状况，都失去资格
         }
         finally 
         {
@@ -80,13 +70,12 @@ class Resources
         {
            //1)循环判断
            while(!flag)
-               //如果为假，放弃消费者的资格
-               condition_con.await();
+               condition.await();
            
            System.out.println(Thread.currentThread().getName()+" ....消费者...."+this.name);
            flag =false;
-           //2)使用生产者condition唤醒进程
-           condition_pro.signal(); //消费者消费完毕后，唤醒生产者的进程
+           //2)使用condition唤醒所有进程
+           condition.signalAll();
         }
         finally    //防止当前线程拿到锁后抛异常一直不释放锁
         {
@@ -97,10 +86,10 @@ class Resources
     }
 }
 
-class Productor implements Runnable
+class Producer implements Runnable
 {
     private Resources res;
-    Productor(Resources res){
+    Producer(Resources res){
         this.res =res;
     }
     public void run(){

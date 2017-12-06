@@ -8,14 +8,14 @@ ProducterConsumerDemo解决了只有两个线程共享资源的生产消费问�
                 2)需要将notify()改成notifyAll()
 */
 
-class  ProducterConsumerDemo2
+class  ProducerConsumerDemo2
 {
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         Resources  r =new Resources();
-        Productor  pro =new Productor(r);
+        Producer  pro =new Producer(r);
         Consumer   con = new Consumer(r);
-        
+
         Thread t1 =new Thread(pro);
         Thread t2 =new Thread(pro);//多个生产者
         Thread t3 =new Thread(con);
@@ -36,34 +36,34 @@ class Resources
 
     public synchronized void set(String name)
     {  //1)循环判断
-       while(flag)
-           try{this.wait();}catch(Exception e){}
-       this.name = name+"--"+count++;
+        while(flag)
+            try{this.wait();}catch(Exception e){}
+        this.name = name+"--"+count++;
 
-       System.out.println(Thread.currentThread().getName()+"生产者"+this.name);
-       flag =true;
-       //2)唤醒所有进程
-       this.notifyAll();
+        System.out.println(Thread.currentThread().getName()+"生产者"+this.name);
+        flag =true;
+        //2)唤醒所有进程
+        this.notifyAll();
 
     }
     public synchronized void out()
     {
-       //1)循环判断
-       while(!flag)
-           try{this.wait();}catch(Exception e){}
-       
-       System.out.println(Thread.currentThread().getName()+" ....消费者...."+this.name);
-       flag =false;
-       //2)唤醒所有进程
-       this.notifyAll();
+        //1)循环判断
+        while(!flag)
+            try{this.wait();}catch(Exception e){}
+
+        System.out.println(Thread.currentThread().getName()+" ....消费者...."+this.name);
+        flag =false;
+        //2)唤醒所有进程
+        this.notifyAll();
 
     }
 }
 
-class Productor implements Runnable
+class Producer implements Runnable
 {
     private Resources res;
-    Productor(Resources res){
+    Producer(Resources res){
         this.res =res;
     }
     public void run(){

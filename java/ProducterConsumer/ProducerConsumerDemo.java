@@ -1,9 +1,9 @@
-class  ProducterConsumerDemo
+class  ProducerConsumerDemo
 {
     public static void main(String[] args) 
     {
         Resources  r =new Resources();
-        Productor  pro =new Productor(r);
+        Producer  pro =new Producer(r);
         Consumer   con = new Consumer(r);
         
         Thread t1 =new Thread(pro);
@@ -45,10 +45,10 @@ class Resources
     }
 }
 
-class Productor implements Runnable
+class Producer implements Runnable
 {
     private Resources res;
-    Productor(Resources res){
+    Producer(Resources res){
         this.res =res;
     }
     public void run(){
