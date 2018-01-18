@@ -2,7 +2,7 @@ import java.util.Stack;
 
 public class ReverseStack {
 
-    //返回栈低元素
+    //返回栈底元素
     public int get(Stack<Integer> stack){
         int result = stack.pop();
         if(stack.isEmpty()){
