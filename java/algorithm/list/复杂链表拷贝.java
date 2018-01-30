@@ -29,16 +29,18 @@ public class ListCopy {
         }
         result = begin.next;
         now = begin;
+        ComplexNode resultNow = result;
+        ComplexNode nowNext,resultNext;
         //构建返回链表，整理next
-        while(now!=null){
-            temp = now.next;
-            next = temp.next;
-            if(next!=null){
-                temp.next = next.next;
-            }
-            now = next;
+        while(resultNow.next!=null){
+            nowNext = resultNow.next;
+            resultNext = nowNext.next;
+            now.next = nowNext;
+            resultNow.next = resultNext;
+            now = nowNext;
+            resultNow = resultNext;
         }
+        now.next = null;
         return result;
     }
 }
-
