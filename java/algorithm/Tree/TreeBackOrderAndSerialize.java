@@ -39,5 +39,27 @@ public class TreeBackOrderAndSerialize {
             }
         }
     }
+    
+    public static void backOrder(Node root){
+        if(root==null)
+            return;
+        Stack<Node> s1 = new Stack<>();
+        Stack<Node> s2 = new Stack<>();
+        s1.push(root);
+        Node temp;
+        while(!s1.isEmpty()){
+            temp = s1.pop();
+            s2.push(temp);
+            if(temp.getLeft()!=null) {
+                s1.push(temp.getLeft());
+            }
+            if(temp.getRight()!=null){
+                s1.push(temp.getRight());
+            }
+        }
+        while(!s2.isEmpty()){
+            System.out.println(s2.pop().getData());
+        }
+    }
 
 }
