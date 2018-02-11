@@ -12,6 +12,13 @@ public class TreeBackOrderAndSerialize {
         }
     }
 
+    /*
+    1、申请一个栈，记为stack，将头节点压入stack，同时设置两个变量h和c。在整个流程中，h代表最近一次弹出并打印的节点，c代表当前stack的栈顶节点，初始时令h为头节点，c为null。
+    2、每次令c等于当前stack的栈顶节点，但是不从stack中弹出节点，分以下三种情况。
+    （1）如果c的左孩子不为空，并且h不等于c的左孩子，也不等于c的右孩子，则把c的左孩子压入stack中。
+    （2）如果情况1不成立，并且c的右孩子不为空，并且h不等于c的右孩子，则把c的右孩子压入stack中。
+    （3）如果情况1、2都不成立，那么从stack中弹出c并打印，然后令h等于c。
+    */
     public static void backOrderNoRecursive(Node root){
         if(root==null)
             return;
@@ -40,6 +47,11 @@ public class TreeBackOrderAndSerialize {
         }
     }
     
+    /*
+    1、申请一个栈，记为s1，将头节点压入s1中。
+    2、从s1中弹出的节点记为cur，然后把cur的左孩子压入s1中，然后把cur的右孩子压入s1中。
+    3、每一个从s1中弹出的节点都放入第二个栈s2中。
+    */
     public static void backOrder(Node root){
         if(root==null)
             return;
